@@ -357,7 +357,7 @@ def putSecretAutoversion(name, secret, kms_key="alias/credstash",
     :return:
     """
 
-    latest_version = getHighestVersion(name=name, table=table, region=region)
+    latest_version = getHighestVersion(name=name, table=table, region=region, endpoint_url=endpoint_url)
     incremented_version = paddedInt(int(latest_version) + 1)
     try:
         putSecret(name=name, secret=secret, version=incremented_version,
@@ -911,7 +911,7 @@ def get_parser():
                                   "CREDSTASH_DEFAULT_TABLE env variable, "
                                   "or if that is not set, the value "
                                   "`credential-store` will be used")
-    parsers['super'].add_argument("--endpoint_url", default=os.environ.get("DYNAMODB_ENDPOINT_URL", None),
+    parsers['super'].add_argument("--endpoint-url", default=os.environ.get("DYNAMODB_ENDPOINT_URL", None),
                                   help="DynamoDB endpoint to use for credential storage. "
                                   "If not specified, credstash "
                                   "will use the value of the "
