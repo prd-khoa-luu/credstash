@@ -329,7 +329,7 @@ def putSecret(name, secret, version="", kms_key="alias/credstash",
         if dynamodb is None:
             dynamodb = session.resource('dynamodb', region_name=region, endpoint_url=endpoint_url)
         if kms is None:
-            kms = session.client('kms', region_name=kms_region or region)
+            kms = session.client('kms', region_name=kms_region or region, endpoint_url=endpoint_url)
 
     key_service = KeyService(kms, kms_key, context)
     sealed = seal_aes_ctr_legacy(
@@ -377,7 +377,7 @@ def getAllSecrets(version="", region=None, endpoint_url=None, table="credential-
     if session is None:
         session = get_session(**kwargs)
     dynamodb = session.resource('dynamodb', region_name=region, endpoint_url=endpoint_url)
-    kms = session.client('kms', region_name=kms_region or region)
+    kms = session.client('kms', region_name=kms_region or region, endpoint_url=endpoint_url)
     secrets = listSecrets(region, table, endpoint_url, session, **kwargs)
 
     # Only return the secrets that match the pattern in `credential`
@@ -565,7 +565,7 @@ def getSecret(name, version="", region=None, endpoint_url=None, table="credentia
         if dynamodb is None:
             dynamodb = session.resource('dynamodb', region_name=region, endpoint_url=endpoint_url)
         if kms is None:
-            kms = session.client('kms', region_name=kms_region or region)
+            kms = session.client('kms', region_name=kms_region or region, endpoint_url=endpoint_url)
 
     secrets = dynamodb.Table(table)
 
