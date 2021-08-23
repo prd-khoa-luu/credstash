@@ -359,13 +359,10 @@ def putSecretAutoversion(name, secret, kms_key="alias/credstash",
 
     latest_version = getHighestVersion(name=name, table=table, region=region, endpoint_url=endpoint_url)
     incremented_version = paddedInt(int(latest_version) + 1)
-    try:
-        putSecret(name=name, secret=secret, version=incremented_version,
-                  kms_key=kms_key, region=region, endpoint_url=endpoint_url, kms_region=kms_region,
-                  table=table, context=context, digest=digest, comment=comment, **kwargs)
-        print("Secret '{0}' has been stored in table {1}".format(name, table))
-    except KmsError as e:
-        fatal(e)
+    putSecret(name=name, secret=secret, version=incremented_version,
+                kms_key=kms_key, region=region, endpoint_url=endpoint_url, kms_region=kms_region,
+                table=table, context=context, digest=digest, comment=comment, **kwargs)
+    print("Secret '{0}' has been stored in table {1}".format(name, table))
 
 
 def getAllSecrets(version="", region=None, endpoint_url=None, table="credential-store",
